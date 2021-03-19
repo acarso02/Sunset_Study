@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Sunset Study</string>
+    <string name="empty"> </string>
+    <string name="question_box_label">Question: </string>
+    <string name="answer_box_label">Answer: </string>
+    <string name="sub">Submit</string>
+</resources>
