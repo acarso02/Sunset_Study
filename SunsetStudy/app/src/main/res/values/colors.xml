@@ -13,4 +13,5 @@
     <color name="gradient7">#6a0d83</color>
     <color name="gradient8">#4B3D60</color>
     <color name="gradient9">#08183A</color>
+    <color name="titleColor">#FFFFFF</color>
 </resources>
