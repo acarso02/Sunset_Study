@@ -4,4 +4,9 @@
     <string name="question_box_label">Question: </string>
     <string name="answer_box_label">Answer: </string>
     <string name="sub">Submit</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="allProjects">All Projects</string>
+    <string name="newProject">New Project</string>
+    <string name="addCard">Add Card</string>
 </resources>

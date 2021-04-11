@@ -7,6 +7,7 @@
     android:background="@drawable/add_gradient"
     tools:context="com.example.sunsetstudy.AddCardActivity">
 
+    <include layout="@layout/toolbar"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -23,16 +24,16 @@
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="138dp"
+        android:layout_height="78dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:text="@string/empty"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#A4C639"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="205dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteX="124dp"
+        tools:layout_editor_absoluteY="476dp" />
 
     <TextView
         android:id="@+id/textView2"
