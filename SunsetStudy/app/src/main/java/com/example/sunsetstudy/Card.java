@@ -1,6 +1,5 @@
 package com.example.sunsetstudy;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Card {
@@ -12,9 +11,8 @@ public class Card {
         Question = question;
         Answer = answer;
         creationDate = java.util.Calendar.getInstance().getTime();
-
-
     }
+
     //getters
     public String getQuestion(){
         return Question;

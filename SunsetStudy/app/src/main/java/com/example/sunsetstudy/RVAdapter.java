@@ -1,5 +1,6 @@
 package com.example.sunsetstudy;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder> {
     ArrayList<Project> projectList;
@@ -34,14 +34,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CardViewHolder holder, final int position) {
         holder.myText1.setText(projectList.get(position).Name);
         holder.myTextCount.setText(Integer.toString(projectList.get(position).getListLength()));
         holder.myView.setOnClickListener(new View.OnClickListener()
             {@Override
             public void onClick(View v){
-                RelativeLayout rl = v.findViewById(R.id.relative_layout);
-                rl.setBackgroundColor(Color.BLUE);
+                Intent move = new Intent(v.getContext(), QuestionsActivity.class);
+                move.putExtra("position", position);
+                context.startActivity(move);
             }});
     }
 

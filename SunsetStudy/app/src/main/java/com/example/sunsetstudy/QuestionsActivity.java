@@ -20,13 +20,23 @@ public class QuestionsActivity extends AppCompatActivity {
     private LinearLayoutManager llm = new LinearLayoutManager(this);
 
     RecyclerView rv;
+    String newString;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.questions);
         rv = findViewById(R.id.recycler_view);
-        RVCardAdapter myAdapter = new RVCardAdapter(this, MainActivity.projectList.get(0));
+
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+             position = 0;  //something is wrong
+        } else {
+            position = (int) extras.get("position");
+        }
+
+        RVCardAdapter myAdapter = new RVCardAdapter(this, MainActivity.projectList.get(position));
         rv.setAdapter(myAdapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
 

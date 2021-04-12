@@ -15,16 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
 
 public class AddCardActivity extends AppCompatActivity implements OnNavigationItemSelectedListener{
-    Button mButton;
-    EditText mEdit;
-    TextView mText;
-
-
+    private Button subButton;
+    private EditText mEditQuestion, mEditAnswer;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -34,16 +32,29 @@ public class AddCardActivity extends AppCompatActivity implements OnNavigationIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_card_activity);
-        mButton = (Button)findViewById(R.id.button1);
+        subButton = (Button)findViewById(R.id.submitButton);
 
-        mButton.setOnClickListener(new View.OnClickListener() {
+        subButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                mEdit = (EditText)findViewById(R.id.editText1);
-                mText = (TextView)findViewById(R.id.textView1);
-                mText.setText("Welcome "+mEdit.getText().toString()+"!");
+                String question, answer;
+
+                mEditQuestion = (EditText)findViewById(R.id.questionBox);
+                mEditAnswer = (EditText)findViewById(R.id.answerBox);
+                question = mEditQuestion.getText().toString();
+                answer = mEditAnswer.getText().toString();
+
+                if(question.matches("")){
+                    //alert field is blank
+                }
+                else{
+                    //add card to the selected project
+                    MainActivity.projectList.get(0).addCard(question, answer);
+                    Toast.makeText(getApplicationContext(), "Submitted!",
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                }
             }
         });
-
 
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.nav_view);

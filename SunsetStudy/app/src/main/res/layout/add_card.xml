@@ -7,33 +7,23 @@
     android:background="@drawable/add_gradient"
     tools:context="com.example.sunsetstudy.AddCardActivity">
 
-    <include layout="@layout/toolbar"/>
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
+        android:layout_marginStart="168dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="532dp"
         android:text="@string/answer_box_label"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#0099FF"
+        app:layout_constraintBottom_toBottomOf="@+id/include"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText1"
         tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="138dp"
-        android:layout_height="78dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/empty"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#A4C639"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="124dp"
-        tools:layout_editor_absoluteY="476dp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -49,15 +39,15 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/questionBox"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="108dp"
         android:background="@drawable/rounded_text_input"
+        android:inputType="textCapSentences|textAutoCorrect"
         android:padding="5dp"
         android:textSize="16sp"
-        android:inputType="textCapSentences|textAutoCorrect"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -69,11 +59,11 @@
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/rounded_text_input"
+        android:inputType="textCapSentences|textAutoCorrect"
         android:padding="5dp"
         android:textSize="16sp"
-        android:inputType="textCapSentences|textAutoCorrect"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3">
 
@@ -84,15 +74,15 @@
         android:id="@+id/spinner1"
         android:layout_width="176dp"
         android:layout_height="40dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="52dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/answerBox" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView2"
