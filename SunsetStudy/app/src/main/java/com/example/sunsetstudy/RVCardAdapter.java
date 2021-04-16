@@ -6,8 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class RVCardAdapter extends RecyclerView.Adapter<RVCardAdapter.CardViewHolder> {
@@ -34,7 +36,13 @@ public class RVCardAdapter extends RecyclerView.Adapter<RVCardAdapter.CardViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final CardViewHolder holder, final int position) {
+        int colorId;
+        String pos;
+
+        pos = Integer.toString(position + 1);
         holder.myText1.setText(project.getCard(position).getQuestion());
+        colorId = getResId("gradient" + pos, R.color.class);
+        holder.myCardView.setBackgroundColor(ContextCompat.getColor(context,  colorId));
         holder.myView.setOnClickListener(new View.OnClickListener()
             {@Override
             public void onClick(View v){
@@ -47,6 +55,16 @@ public class RVCardAdapter extends RecyclerView.Adapter<RVCardAdapter.CardViewHo
                     holder.disp = 'Q';
                 }
             }});
+        holder.myView.setOnLongClickListener(new View.OnLongClickListener()
+            {@Override
+            public boolean onLongClick(View v){
+                ((QuestionsActivity) context).displayDelete(position, context);
+                return true;
+            }});
+    }
+
+    public void removeItem(int position){
+        cardList.remove(position);
     }
 
     @Override
@@ -56,13 +74,26 @@ public class RVCardAdapter extends RecyclerView.Adapter<RVCardAdapter.CardViewHo
 
     public class CardViewHolder extends RecyclerView.ViewHolder{
         TextView myText1;
-        View myView;
+        View myView, myCardView;
         char disp = 'Q';
 
         public CardViewHolder(@NonNull View itemView) {
             super(itemView);
             myText1 = itemView.findViewById(R.id.project_name);
             myView = itemView;
+            myCardView = itemView.findViewById(R.id.relative_layout);
+
         }
     }
+    public static int getResId(String resName, Class<?> c) {
+
+        try {
+            Field idField = c.getDeclaredField(resName);
+            return idField.getInt(idField);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
 }

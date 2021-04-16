@@ -1,4 +1,5 @@
 package com.example.sunsetstudy;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder> {
-    ArrayList<Project> projectList;
+    static ArrayList<Project> projectList;
     int count = 0;
     Context context;
 
@@ -34,21 +35,31 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CardViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final CardViewHolder holder, final int position) {
         holder.myText1.setText(projectList.get(position).Name);
         holder.myTextCount.setText(Integer.toString(projectList.get(position).getListLength()));
         holder.myView.setOnClickListener(new View.OnClickListener()
-            {@Override
-            public void onClick(View v){
-                Intent move = new Intent(v.getContext(), QuestionsActivity.class);
-                move.putExtra("position", position);
-                context.startActivity(move);
-            }});
+        {@Override
+        public void onClick(View v){
+            Intent move = new Intent(v.getContext(), QuestionsActivity.class);
+            move.putExtra("position", position);
+            context.startActivity(move);
+        }});
+        holder.myView.setOnLongClickListener(new View.OnLongClickListener()
+        {@Override
+        public boolean onLongClick(View v){
+            ((MainActivity) context).displayDelete(position, context);
+            return true;
+        }});
+    }
+
+    public void removeItem(int position){
+        projectList.remove(position);
     }
 
     @Override
     public int getItemCount() {
-        return count;
+        return projectList.size();
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder{

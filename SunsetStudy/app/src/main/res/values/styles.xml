@@ -7,5 +7,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="titleTextColor">@color/titleColor</item>
     </style>
+    <!-- ToolBar -->
+    <style name="ToolBarStyle" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
 
 </resources>

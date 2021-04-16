@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/widget"
+    android:minHeight="80dp"
+    android:minWidth="220dp"
+    android:resizeMode="none"
+    android:widgetCategory="home_screen">
 
-</PreferenceScreen>
+</appwidget-provider>

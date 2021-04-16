@@ -9,4 +9,6 @@
     <string name="allProjects">All Projects</string>
     <string name="newProject">New Project</string>
     <string name="addCard">Add Card</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
