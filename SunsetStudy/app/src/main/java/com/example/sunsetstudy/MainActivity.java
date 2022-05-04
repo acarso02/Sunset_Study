@@ -1,10 +1,13 @@
 package com.example.sunsetstudy;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,9 +17,12 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -57,9 +63,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         ImageButton addButton;
         setContentView(R.layout.activity_main);
+        //make status bar black
+        this.getWindow().setStatusBarColor(Color.BLACK);
 
         activity = this;
         addButton = (ImageButton) findViewById(R.id.addProject);
+        this.loadData();
 
         // toolbar
         toolbar = findViewById(R.id.toolbar);
@@ -76,7 +85,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     protected void onStart() {
         super.onStart();
-
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity.this);
+        projectList = dataBaseHelper.getAll();
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.nav_view);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -94,13 +104,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void saveData(){
+    public void saveData(){
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(projectList);
         editor.putString("task list", json);
         editor.apply();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+
     }
 
     private void loadData() {
@@ -144,16 +161,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         builder.setTitle("Project Title");
         builder.setView(editText);
+        editText.setSingleLine();
         builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                    if(editText.getText().toString().matches("")){
-                        builder.setMessage("Please enter a valid name");
-                    }
-                    else{
-                        Project project = new Project(editText.getText().toString());
-                        MainActivity.projectList.add(project);
-                        onStart();
-                    }
+                if(editText.getText().toString().matches("")){
+                    builder.setMessage("Please enter a valid name");
+                }
+                else{
+                    DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity.this);
+                    Project project = new Project(editText.getText().toString().trim());
+                    MainActivity.projectList.add(project);
+                    dataBaseHelper.addOne(project);
+                    onStart();
+                }
                 }
             });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -161,6 +181,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
         builder.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(requestCode==2)
+        {
+            saveData();
+            //do the things u wanted
+        }
     }
 
     public void openAddCardActivity(){
@@ -181,8 +213,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(DialogInterface dialog, int whichButton) {
                 Toast.makeText(ct, "mock delete!",
                         Toast.LENGTH_LONG).show();
+                //remove from database
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity.this);
+                dataBaseHelper.deleteOne(projectList.get(position));
+
+                //remove from list
                 myAdapter.removeItem(position);
                 myAdapter.notifyDataSetChanged();
+                saveData();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -192,4 +230,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         builder.show();
     }
+
+    public void setSelected(final int position, final Context ct){
+
+        //set widget
+        broadcastActiveProject(position);
+
+        //update database
+        projectList.get(position).setIsActive(true);
+        broadcastActiveProject(position);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity.this);
+        dataBaseHelper.update(projectList.get(position));
+    }
+
+    public static Project getActiveProject(){
+        for(Project project : projectList){
+            if(project.isActive){
+                return project;
+            }
+        }
+        return null;
+    }
+
+    public void broadcastActiveProject(int position){
+        Gson gson = new Gson();
+        Context context = getApplicationContext();
+        Intent i = new Intent(context, MyAppWidgetProvider.class);
+        i.setAction("UPDATE_ACTIVE_PROJECT");
+        i.putExtra("project", gson.toJson(projectList.get(position)));
+        context.sendBroadcast(i);
+    }
+
 }

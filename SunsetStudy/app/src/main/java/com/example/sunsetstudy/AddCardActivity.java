@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,7 +43,10 @@ public class AddCardActivity extends AppCompatActivity implements OnNavigationIt
         mEditAnswer = (EditText)findViewById(R.id.answerBox);
         projectStrings = new String[MainActivity.projectList.size()];
         int i = 0;
+        int defaultSpinnerPosition = 0;
         Random rand = new Random();
+        //make status bar black
+        this.getWindow().setStatusBarColor(Color.BLACK);
 
         this.setTitle("Add a Card");
         //random question hint
@@ -61,6 +65,10 @@ public class AddCardActivity extends AppCompatActivity implements OnNavigationIt
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(aa);
 
+        defaultSpinnerPosition = getIntent().getIntExtra("Position", defaultSpinnerPosition);
+
+        spinner.setSelection(defaultSpinnerPosition);
+
         subButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 String question, answer;
@@ -72,8 +80,12 @@ public class AddCardActivity extends AppCompatActivity implements OnNavigationIt
                 }
                 else{
                     //add card to the selected project
-                   selectedItem =  spinner.getSelectedItemPosition();
+                    selectedItem =  spinner.getSelectedItemPosition();
                     MainActivity.projectList.get(selectedItem).addCard(question, answer);
+                    //update the database
+                    DataBaseHelper dataBaseHelper = new DataBaseHelper(AddCardActivity.this);
+                    dataBaseHelper.update(MainActivity.projectList.get(selectedItem));
+
                     Toast.makeText(getApplicationContext(), "Submitted!",
                             Toast.LENGTH_LONG).show();
                     finish();

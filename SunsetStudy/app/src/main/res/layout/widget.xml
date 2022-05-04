@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relative_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="28dp"
-        android:layout_height="112dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@+id/textView"
-        android:background="@color/white"
-        android:padding="8dp"
-        android:text="NEXT" />
+    android:id="@+id/widget_relative_layout"
+    android:layout_width="500dp"
+    android:layout_height="180dp"
+    >
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="239dp"
-        android:layout_height="111dp"
+        android:id="@+id/widget_content"
+        android:layout_width="500dp"
+        android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
+        android:maxHeight="90dp"
+        android:padding="10dp"
         android:text="TextView"
         android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/widget_project_name"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@+id/widget_content"
+        android:paddingStart="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+        android:textAlignment="viewStart"
+        android:textAllCaps="true"
+        android:textColor="@color/grey"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/qa_number"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@+id/widget_content"
+        android:layout_alignParentEnd="true"
+        android:paddingEnd="20dp"
+        android:textAlignment="viewEnd"
+        android:textAllCaps="true"
+        android:textColor="@color/grey"
+        android:textStyle="italic" />
 </RelativeLayout>

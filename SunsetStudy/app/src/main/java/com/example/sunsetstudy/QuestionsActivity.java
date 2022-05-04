@@ -42,6 +42,7 @@ public class QuestionsActivity extends AppCompatActivity  implements NavigationV
     String projectName;
     int position;
     RVCardAdapter myAdapter;
+
     public static Activity activity;
 
     @Override
@@ -51,11 +52,13 @@ public class QuestionsActivity extends AppCompatActivity  implements NavigationV
         final ImageButton addButton;
         activity = this;
         addButton = (ImageButton) findViewById(R.id.addCard);
+        //make status bar black
+        this.getWindow().setStatusBarColor(Color.BLACK);
+
         Bundle extras = getIntent().getExtras();
         position = (int) extras.get("position");
         projectName = MainActivity.projectList.get(position).Name;
         this.setTitle(projectName + " - Questions");     //get project name and set it to the title
-        //setTitle("Questions");
 
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.nav_view);
@@ -69,11 +72,11 @@ public class QuestionsActivity extends AppCompatActivity  implements NavigationV
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent createCard = new Intent(QuestionsActivity.this, AddCardActivity.class);
+                createCard.putExtra("Position", position);
                 startActivity(createCard);
             }
         });
@@ -81,7 +84,7 @@ public class QuestionsActivity extends AppCompatActivity  implements NavigationV
 
     protected void onStart() {
         super.onStart();
-
+        saveCall();
         rv = findViewById(R.id.recycler_view);
 
         Bundle extras = getIntent().getExtras();
@@ -116,7 +119,7 @@ public class QuestionsActivity extends AppCompatActivity  implements NavigationV
         return true;
     }
 
-    public void displayDelete(final int position, final Context ct){
+    public void displayDelete(final int cardPosition, final Context ct){
         final AlertDialog.Builder builder = new AlertDialog.Builder(ct);
 
         builder.setTitle("Delete question?");
@@ -124,8 +127,13 @@ public class QuestionsActivity extends AppCompatActivity  implements NavigationV
             public void onClick(DialogInterface dialog, int whichButton) {
                 Toast.makeText(ct, "Deleted!",
                         Toast.LENGTH_LONG).show();
-                myAdapter.removeItem(position);
+                //update projects list
+                myAdapter.removeItem(cardPosition);
                 myAdapter.notifyDataSetChanged();
+                MainActivity.projectList.get(position).getCardList().remove(cardPosition);
+                //update database
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(QuestionsActivity.this);
+                dataBaseHelper.update(MainActivity.projectList.get(position));
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -134,5 +142,12 @@ public class QuestionsActivity extends AppCompatActivity  implements NavigationV
             }
         });
         builder.show();
+    }
+
+    private void saveCall(){
+        String message="hello ";
+        Intent intent=new Intent();
+        intent.putExtra("MESSAGE",message);
+        setResult(2,intent);
     }
 }

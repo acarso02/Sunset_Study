@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class RVCardAdapter extends RecyclerView.Adapter<RVCardAdapter.CardViewHolder> {
-    ArrayList<Card> cardList;
+    static ArrayList<Card> cardList;
     Project project;
     int count = 0;
     Context context;
@@ -69,7 +69,7 @@ public class RVCardAdapter extends RecyclerView.Adapter<RVCardAdapter.CardViewHo
 
     @Override
     public int getItemCount() {
-        return count;
+        return cardList.size();
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder{
